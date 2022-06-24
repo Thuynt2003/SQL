@@ -73,7 +73,8 @@ select * from v_Book
 
 DROP VIEW IF EXISTS v_Customer
 create view v_Customer AS 
-select distinct Customer.CustomerID,Customer.CustomerName,Customer.Address,BookSold.Amount from Customer inner Join BookSold on Customer.CustomerID=BookSold.CustomerID 
+select distinct Customer.CustomerID,Customer.CustomerName,Customer.Address,BookSold.Amount from Customer 
+inner Join BookSold on Customer.CustomerID=BookSold.CustomerID 
 select *from v_Customer
 
 DROP VIEW IF EXISTS v_buybook
@@ -90,7 +91,7 @@ JOIN Book as b on b.BookCode = bs.BookCode
 group by c.CustomerName
 select *from v_total_price
 
-/* ------------------------BTVN---------------------------------- */
+/* ------------------------BTVN lab9---------------------------------- */
 
 create table Class(
 ClassCode varchar(10) primary key,
@@ -162,10 +163,24 @@ select *from Customer
 create view v_Student as
 select Student.FullName  from Student  join Mark on Student.RollNo=Mark.RollNo group by Student.FullName having COUNT(Mark.RollNo)>=2 
 select * from v_Student
-create view v_Students as
-select Student.FullName  from Student  join Mark on Student.RollNo=Mark.RollNo and PMark <5 or PMark<5
-select * from v_Students
-drop view IF EXISTS v_Students
+
+create view v_Subjects as
+select Student.FullName  from Student  join Mark on Student.RollNo=Mark.RollNo where Mark.PMark <5 or Mark.WMark <5
+select * from v_Subjects
+
+create view v_TimeSlot as
+select Student.FullName  from Student  join Class on Class.ClassCode = Student.ClassCode where Class.TimeSlot='G'
+select * from v_TimeSlot
+
+create view v_EPC as
+select Student.FullName,Student.ClassCode,Class.HeadTeacher,Mark.Mark from Student 
+join Class on  Class.ClassCode = Student.ClassCode 
+join Mark on Student.RollNo=Mark.RollNo 
+where SubjectCode ='EPC' and Mark <5
+select * from v_EPC
+
+/* ------------------------------------Bài Store procedure----------------------------------------*/
+
 create procedure sp_Customers As Select  CustomerID,CustomerName,Address from Customer
 ExECUTE sp_Customers
 select *from BookSold
@@ -174,8 +189,6 @@ create procedure sp_BookSold @Date int
 As
 Select BookSold.Date from BookSold where DATEPART(YY,Date) <= @Date
 EXECUTE sp_BookSold  2019
-
-
 
 create procedure sp_BookSoldCount @Date int,@Count int OUTPUT
 AS
