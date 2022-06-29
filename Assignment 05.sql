@@ -74,5 +74,4 @@
   group by ContactInfo.ContactInfozName
   --Tìm tổng số người trong danh bạ sinh vào thang 12.
   select count(ContactInfo.ContactInfozName) as Total from ContactInfo where FORMAT(ContactInfo.BirthDay, 'MM') = 12
-  --Hiển thị toàn bộ thông tin về người, của từng số điện thoại.
-  select 
+  --Hiển thị toàn bộ thông tin về người, của từng số điện thoại. 
