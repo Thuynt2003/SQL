@@ -55,3 +55,24 @@
  ('83d659d4-1a9f-4b5e-af39','0ec08a95-2416-4d5f-a6f2','86106d8a-9472-4e43'),
  ('fc59931c-2d33-46b8-a143','0ec08a95-2416-4d5f-a6f2','12d738f5-84b9-4bc9'),
  ('98fc4fbb-cb79-4f73-9e0b','071f482d-d06a-4406-9838','9feb8e12-7a69-464c')
+
+ --Liệt kê danh sách những người trong danh bạ
+ select ContactInfo.ContactInfozName from ContactInfo
+ --Liệt kê danh sách số điện thoại có trong danh bạ
+ select PhoneNumber.PhoneNumber from PhoneNumber
+ --Liệt kê danh sách người trong danh bạ theo thứ thự alphabet.
+ select ContactInfo.ContactInfozName from ContactInfo order by ContactInfozName
+ --Liệt kê các số điện thoại của người có tên là Nguyễn Văn An.
+ select PhoneNumber.PhoneNumber from PhoneNumber 
+ join Phone_List on PhoneNumber.PhoneNumberID =Phone_List.PhoneNumberID
+ join ContactInfo on ContactInfo.ContactInfoID =Phone_List.ContactInfoID where ContactInfo.ContactInfozName ='Nguyen Van An' 
+ --Liệt kê những người có ngày sinh là 12/12/09
+ select ContactInfo.ContactInfozName from ContactInfo where ContactInfo.BirthDay = '12-12-2009'
+  select ContactInfo.ContactInfozName ,Count (PhoneNumber.PhoneNumber ) as 'PhoneNumber' from ContactInfo
+  join Phone_List on ContactInfo.ContactInfoID =Phone_List.ContactInfoID 
+  join PhoneNumber on PhoneNumber.PhoneNumberID =Phone_List.PhoneNumberID 
+  group by ContactInfo.ContactInfozName
+  --Tìm tổng số người trong danh bạ sinh vào thang 12.
+  select count(ContactInfo.ContactInfozName) as Total from ContactInfo where FORMAT(ContactInfo.BirthDay, 'MM') = 12
+  --Hiển thị toàn bộ thông tin về người, của từng số điện thoại.
+  select 
